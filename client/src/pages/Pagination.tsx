@@ -4,7 +4,7 @@ import { Item, ItemPaginate } from "../types";
 import { Link } from "react-router-dom";
 import { useDebounce } from "use-debounce";
 
-async function getAllItem(take: number, page: number) {
+async function getPaginateItem(take: number, page: number) {
   const { data } = await axios.post(`${import.meta.env.VITE_SERVER_URL}/item/paginate`, {
     take, page
   });
@@ -24,7 +24,7 @@ const Pagination = () => {
 
   //handle changing table setup
   useEffect(() => {
-    getAllItem(takeValue, pageValue)
+    getPaginateItem(takeValue, pageValue)
       .then((datas) => {
         setItems(datas.data);
         setTotalPage(datas.totalPage);
@@ -48,8 +48,8 @@ const Pagination = () => {
           </thead>
           <tbody className="text-lg">
             {
-              items.map((item) => (
-                <tr key={item.id} className="border-2 border-collapse">
+              items.map((item, index) => (
+                <tr key={index} className="border-2 border-collapse">
                   <td className="p-1">{item.id}</td>
                   <td className="p-1">{item.name}</td>
                   <td className="p-1">{item.price}</td>
@@ -62,8 +62,8 @@ const Pagination = () => {
           </tbody>
         </table>
 
-        <div className="w-4/6 h-16 m-auto flex justify-end">
-          <div className="flex w-4/6 justify-between items-center text-lg">
+        <div className="w-4/6 h-16 m-auto flex justify-end bg-blue-500">
+          <div className="flex justify-between items-center text-lg bg-red-500">
 
             <div>
               <label htmlFor="take" className="mr-5">Take</label>
@@ -97,6 +97,7 @@ const Pagination = () => {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5" />
               </svg>
             </button>
+
           </div>
         </div>
 

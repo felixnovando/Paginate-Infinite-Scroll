@@ -14,14 +14,14 @@ import {
 
 const router = Router();
 
-router.get("/:id", getItem);
-
 router.get("/", getAllItem);
 router.post("/", insertItem);
 router.put("/", updateItem);
 router.delete("/", deleteItem);
 
 router.get("/count", countItem);
+
+router.get("/:id", getItem);
 
 router.post("/paginate", paginateItem);
 router.post("/infinite", infiniteScrollItem);

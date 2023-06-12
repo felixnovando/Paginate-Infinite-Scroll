@@ -9,3 +9,8 @@ export type ItemPaginate = {
     totalPage: number,
     data: Item[]
 }
+
+export type ItemInfiniteScroll = {
+    hasMoreData: boolean,
+    data: Item[]
+}
