@@ -1,49 +1,52 @@
 import axios from "axios";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { usePopUpContext } from "../context";
 
 async function getAllItemCount() {
-  type Response = {
-    data: {
-      total: number
-    }
-  };
-  const { data } = await axios.get<Response>(`${import.meta.env.VITE_SERVER_URL}/item/count`);
+  const { data } = await axios.get<{ data: { total: number } }>(`${import.meta.env.VITE_SERVER_URL}/item/count`);
   return data.data.total;
 }
 
 async function clearItems() {
-  type Response = {
-    data: string
-  }
-  const { data } = await axios.delete<Response>(`${import.meta.env.VITE_SERVER_URL}/item/clear`);
+  const { data } = await axios.delete<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item/clear`);
   return data.data;
 }
 
 async function seedItems(count: number) {
-  type Response = {
-    data: string
-  }
-  const { data } = await axios.post<Response>(`${import.meta.env.VITE_SERVER_URL}/item/seed`);
+  const { data } = await axios.post<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item/seed`, {
+    count
+  });
   return data.data;
 }
 
 const Settings = () => {
   const [total, setTotal] = useState(0);
-  const seedCountRef = useRef<number>(0);
+  const [seedCount, setSeedCount] = useState<number>(0);
 
-  const { success, error, info } = usePopUpContext();
+  const { success, error } = usePopUpContext();
 
   useEffect(() => {
     getAllItemCount().then((result) => setTotal(result));
   }, []);
 
-  function handleSeed() {
-    info("Seeding Success");
+  async function handleSeed() {
+    try {
+      const result = await seedItems(seedCount);
+      success(result);
+      setSeedCount(0);
+    } catch (e: any) {
+      error(e.message);
+    }
   }
 
-  function handleClear() {
-    error("Error Clear Data");
+  async function handleClear() {
+    try {
+      const result = await clearItems();
+      success(result);
+      setSeedCount(0);
+    } catch (e: any) {
+      error(e.message);
+    }
   }
 
   return (
@@ -59,9 +62,8 @@ const Settings = () => {
           <div className="flex items-center justify-evenly mb-5">
             <label htmlFor="count" className="">Seed Count</label>
             <input type="number" name="count" id="count" className="p-2 pl-2"
-              onChange={(e) => {
-                seedCountRef.current = Number(e.target.value)
-              }}
+              value={seedCount}
+              onChange={(e) => setSeedCount(Number(e.target.value))}
             />
           </div>
 

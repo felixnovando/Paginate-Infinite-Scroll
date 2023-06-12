@@ -1,4 +1,4 @@
-export * from "./GetItemHandler";
+export * from "./GetAllItemHandler";
 export * from "./InsertItemHandler";
 export * from "./UpdateItemHandler";
 export * from "./DeleteItemHandler";
@@ -7,3 +7,4 @@ export * from "./ClearItemHandler";
 export * from "./InfiniteScrollHandler";
 export * from "./SeedItemHandler";
 export * from "./CountItemHandler";
+export * from "./GetItemHandler";

@@ -9,9 +9,12 @@ import {
   paginateItem,
   seedItem,
   updateItem,
+  getItem,
 } from "../handler";
 
 const router = Router();
+
+router.get("/:id", getItem);
 
 router.get("/", getAllItem);
 router.post("/", insertItem);

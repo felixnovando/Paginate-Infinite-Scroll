@@ -28,6 +28,7 @@ export const insertItem = async (req: Request, res: Response) => {
     });
 
   return res.json(<ResponseType>{
-    message: result,
+    message: "success",
+    data: result
   });
 };
