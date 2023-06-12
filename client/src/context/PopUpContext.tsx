@@ -1,0 +1,55 @@
+import React, { useContext } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import "../toast.css";
+
+interface PopUpContextProp {
+    success: (text: string) => void,
+    error: (text: string) => void,
+    info: (text: string) => void
+}
+
+const popUpContextInitial: PopUpContextProp = {
+    success: () => { },
+    error: () => { },
+    info: () => { }
+};
+
+const PopUpContext = React.createContext<PopUpContextProp>(popUpContextInitial);
+
+export const usePopUpContext = () => {
+    const context = useContext(PopUpContext);
+    return context;
+}
+
+export const PopUpProvider = ({ children }: { children: React.ReactNode }) => {
+
+    const handleSuccess = (text: string) => {
+        toast.success(text);
+    };
+
+    const handleError = (text: string) => {
+        toast.error(text);
+    }
+
+    const handleInfo = (text: string) => {
+        toast.info(text);
+    }
+
+    return (
+        <PopUpContext.Provider value={{ success: handleSuccess, error: handleError, info: handleInfo }}>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+            {children}
+        </PopUpContext.Provider>
+    );
+};
