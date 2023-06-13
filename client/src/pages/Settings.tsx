@@ -30,10 +30,16 @@ const Settings = () => {
   }, []);
 
   async function handleSeed() {
+    if(seedCount < 1 || seedCount > 10000){
+      error("Seeding Count Must Be Between 1 and 10000");
+      return;
+    }
+
     try {
       const result = await seedItems(seedCount);
       success(result);
       setSeedCount(0);
+      setTotal(seedCount);
     } catch (e: any) {
       error(e.message);
     }
@@ -44,6 +50,7 @@ const Settings = () => {
       const result = await clearItems();
       success(result);
       setSeedCount(0);
+      setTotal(0);
     } catch (e: any) {
       error(e.message);
     }

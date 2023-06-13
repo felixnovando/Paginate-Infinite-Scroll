@@ -44,9 +44,18 @@ const EditItem = () => {
                 setName(res.name);
                 setPrice(res.price);
             })
-    }, []);
+    }, [id]);
 
     async function handleUpdateItem() {
+
+        if (name === "") {
+            error("Product Name Must Not Empty");
+            return;
+        } else if (price <= 0) {
+            error("Product Price Must Not Lower than 1");
+            return;
+        }
+
         if (!data) return;
         try {
             const result = await updateItem(data?.id, name, price);
@@ -58,6 +67,7 @@ const EditItem = () => {
 
     async function handleDeleteItem() {
         if (!data) return;
+
         try {
             const result = await deleteItem(data.id);
             success(result);

@@ -9,9 +9,15 @@ interface PopUpContextProp {
 }
 
 const popUpContextInitial: PopUpContextProp = {
-    success: () => { },
-    error: () => { },
-    info: () => { }
+    success: (text: string) => {
+        toast.success(text);
+    },
+    error: (text: string) => {
+        toast.error(text);
+    },
+    info: (text: string) => {
+        toast.info(text);
+    }
 };
 
 const PopUpContext = React.createContext<PopUpContextProp>(popUpContextInitial);
@@ -23,20 +29,8 @@ export const usePopUpContext = () => {
 
 export const PopUpProvider = ({ children }: { children: React.ReactNode }) => {
 
-    const handleSuccess = (text: string) => {
-        toast.success(text);
-    };
-
-    const handleError = (text: string) => {
-        toast.error(text);
-    }
-
-    const handleInfo = (text: string) => {
-        toast.info(text);
-    }
-
     return (
-        <PopUpContext.Provider value={{ success: handleSuccess, error: handleError, info: handleInfo }}>
+        <PopUpContext.Provider value={popUpContextInitial}>
             <ToastContainer
                 position="top-right"
                 autoClose={5000}

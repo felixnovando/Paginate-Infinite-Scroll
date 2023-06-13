@@ -17,6 +17,14 @@ const InsertItem = () => {
     const { success, error } = usePopUpContext();
 
     async function handleInsertItem() {
+        if (name === "") {
+            error("Product Name Must Not Empty");
+            return;
+        } else if (price <= 0) {
+            error("Product Price Must Not Lower than 1");
+            return;
+        }
+
         try {
             const result = await insertItem(name, price);
             success(result);

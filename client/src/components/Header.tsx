@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom"
 
 function className(...classes: string[]) {
     let fullClass = "";
-    for (let c of classes)
+    for (const c of classes)
         fullClass += c + " ";
     return fullClass.substring(0, fullClass.length - 1);
 }

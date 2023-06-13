@@ -6,7 +6,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <div className="h-screen flex flex-col p-1">
             <Header />
 
-            <main id="main-content" className="flex-1 p-5 overflow-y-scroll">
+            <main id="main-content" className="flex-1 p-5">
                 {children}
             </main>
         </div>
