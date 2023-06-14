@@ -1,4 +1,4 @@
-# Simple Pagination and Infinite Scrolling
+# Pagination and Infinite Scrolling
 
 <p>Simple App to demonstrate pagination and infinite scrolling</p>
 
