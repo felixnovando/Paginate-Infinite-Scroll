@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { Product, ResponseType } from "../types";
-import { mutate, query } from "../db/connection";
+import { ResponseType } from "../types";
 import { plainToInstance } from "class-transformer";
 import { validateDTO } from "../util";
 import { UpdateItemDTO } from "../dto";
+import { getItem, updateItem } from "../model/item";
 
-export const updateItem = async (req: Request, res: Response) => {
+export const updateItemHandler = async (req: Request, res: Response) => {
   const body = plainToInstance(UpdateItemDTO, req.body);
   const errors = await validateDTO(body);
 
@@ -23,21 +23,16 @@ export const updateItem = async (req: Request, res: Response) => {
     });
   }
 
-  //check item exists
-  const products = await query<Product>(`SELECT * FROM items WHERE id = ${body.id}`);
-  const product: Product | null = products.length == 0 ? null : products[0];
+  const { id, name, price } = body;
 
-  if (product == null)
+  const item = await getItem(body.id);
+  if (item == null)
     return res.status(400).json(<ResponseType>{
       message: "item is not exists",
       error: ["item is not exists"],
     });
 
-  const { id, name, price } = body;
-
-  const result = await mutate(
-    `UPDATE items SET name='${name}', price=${price} WHERE id = ${id}`
-  );
+  const result = await updateItem(id, name, price);
 
   if (result === null)
     return res.status(500).json(<ResponseType>{

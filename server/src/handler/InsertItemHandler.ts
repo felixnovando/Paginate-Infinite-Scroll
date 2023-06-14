@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { ResponseType } from "../types";
-import { mutate } from "../db/connection";
 import { plainToInstance } from "class-transformer";
 import { validateDTO } from "../util";
 import { InsertItemDTO } from "../dto";
+import { insertItem } from "../model/item";
 
-export const insertItem = async (req: Request, res: Response) => {
+export const insertItemHandler = async (req: Request, res: Response) => {
   const body = plainToInstance(InsertItemDTO, req.body);
   const errors = await validateDTO(body);
 
@@ -22,12 +22,9 @@ export const insertItem = async (req: Request, res: Response) => {
       error: finError,
     });
   }
-
   const { name, price } = body;
 
-  const result = await mutate(
-    `INSERT INTO items VALUES (DEFAULT, '${name}', ${price})`
-  );
+  const result = await insertItem(name, price);
 
   if (result === null)
     return res.status(500).json(<ResponseType>{

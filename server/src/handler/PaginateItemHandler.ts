@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { PaginateResponse, Product, ResponseType } from "../types";
-import { query } from "../db/connection";
+import { PaginateResponse, ResponseType } from "../types";
 import { plainToInstance } from "class-transformer";
 import { validateDTO } from "../util";
 import { PaginateItemDTO } from "../dto";
+import { countItem, queryRange } from "../model/item";
 
-export const paginateItem = async (req: Request, res: Response) => {
+export const paginateItemHandler = async (req: Request, res: Response) => {
   const body = plainToInstance(PaginateItemDTO, req.body);
   const errors = await validateDTO(body);
 
@@ -27,21 +27,17 @@ export const paginateItem = async (req: Request, res: Response) => {
       error: tempError,
     });
 
-  const productCount = await query<{ total: number }>(
-    "SELECT COUNT(*) as `total` FROM items"
-  );
+  const itemCount = await countItem();
 
-  const totalPage = Math.ceil(productCount[0].total / take);
+  const totalPage = Math.ceil(itemCount.total / take);
   const offset = take * (page - 1);
 
-  const products = await query<Product>(
-    `SELECT * FROM items LIMIT ${take} OFFSET ${offset}`
-  );
+  const items = await queryRange(take, offset);
 
   return res.json(<PaginateResponse>{
     message: "success",
     currentPage: page,
     totalPage: totalPage,
-    data: products,
+    data: items,
   });
 };

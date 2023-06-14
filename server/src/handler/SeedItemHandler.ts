@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
-import { Product, ResponseType } from "../types";
+import { Item, ResponseType } from "../types";
 import { mutate } from "../db/connection";
 import { plainToInstance } from "class-transformer";
 import { validateDTO } from "../util";
 import { SeedItemDTO } from "../dto";
 import json from "../db/data.json";
 
-export const seedItem = async (req: Request, res: Response) => {
+export const seedItemHandler = async (req: Request, res: Response) => {
   const body = plainToInstance(SeedItemDTO, req.body);
   const errors = await validateDTO(body);
 
@@ -24,7 +24,7 @@ export const seedItem = async (req: Request, res: Response) => {
       error: ["count must be between 1 and 10000"],
     });
 
-  const datas = json as Product[];
+  const datas = json as Item[];
 
   let query = "INSERT INTO items VALUES ";
 

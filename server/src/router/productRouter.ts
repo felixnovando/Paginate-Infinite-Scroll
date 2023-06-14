@@ -1,32 +1,32 @@
 import { Router } from "express";
 import {
-  countItem,
-  getAllItem,
-  insertItem,
-  clearItem,
-  deleteItem,
-  infiniteScrollItem,
-  paginateItem,
-  seedItem,
-  updateItem,
-  getItem,
+  countItemHandler,
+  getAllItemHandler,
+  insertItemHandler,
+  clearItemHandler,
+  deleteItemHandler,
+  infiniteScrollItemHandler,
+  paginateItemHandler,
+  seedItemHandler,
+  updateItemHandler,
+  getItemHandler,
 } from "../handler";
 
 const router = Router();
 
-router.get("/", getAllItem);
-router.post("/", insertItem);
-router.put("/", updateItem);
-router.delete("/", deleteItem);
+router.get("/", getAllItemHandler);
+router.post("/", insertItemHandler);
+router.put("/", updateItemHandler);
+router.delete("/", deleteItemHandler);
 
-router.get("/count", countItem);
+router.get("/count", countItemHandler);
 
-router.get("/:id", getItem);
+router.get("/:id", getItemHandler);
 
-router.post("/paginate", paginateItem);
-router.post("/infinite", infiniteScrollItem);
-router.post("/seed", seedItem);
+router.post("/paginate", paginateItemHandler);
+router.post("/infinite", infiniteScrollItemHandler);
+router.post("/seed", seedItemHandler);
 
-router.delete("/clear", clearItem);
+router.delete("/clear", clearItemHandler);
 
 export default router;

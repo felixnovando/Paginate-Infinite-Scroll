@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import { ResponseType } from "../types";
-import { mutate } from "../db/connection";
+import { clearItem, resetItemOrder } from "../model/item";
 
-export const clearItem = async (req: Request, res: Response) => {
-  const result = await mutate(`DELETE FROM items`);
+export const clearItemHandler = async (req: Request, res: Response) => {
 
-  await mutate("ALTER TABLE items AUTO_INCREMENT = 1");
+  const result = await clearItem();
+
+  await resetItemOrder();
 
   if (result === null)
     return res.status(500).json(<ResponseType>{

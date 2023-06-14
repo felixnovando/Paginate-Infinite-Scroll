@@ -1,11 +1,13 @@
 import { Request, Response } from "express";
-import { Product, ResponseType } from "../types";
-import { query } from "../db/connection";
+import { ResponseType } from "../types";
+import { getAllItem } from "../model/item";
 
-export const getAllItem = async (req: Request, res: Response) => {
-  const products = await query<Product>(`SELECT * FROM items`);
+export const getAllItemHandler = async (req: Request, res: Response) => {
+
+  const items = await getAllItem();
+
   res.json(<ResponseType>{
     message: "success",
-    data: products,
+    data: items,
   });
 };

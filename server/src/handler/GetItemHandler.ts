@@ -1,16 +1,21 @@
 import { Request, Response } from "express";
-import { Product, ResponseType } from "../types";
-import { query } from "../db/connection";
+import { ResponseType } from "../types";
+import { getItem } from "../model/item";
 
-export const getItem = async (req: Request, res: Response) => {
+export const getItemHandler = async (req: Request, res: Response) => {
     const { id } = req.params;
 
-    const products = await query<Product>(`SELECT * FROM items WHERE id = ${id}`);
+    let num: number = 0;
 
-    const product : Product | null = products.length == 0 ? null : products[0];
+    try {
+        num = Number(id);
+    } catch (error) {
+        num = -1;
+    }
 
+    const item = await getItem(num);
     res.json(<ResponseType>{
         message: "success",
-        data: product,
+        data: item,
     });
 };
