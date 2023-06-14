@@ -14,7 +14,7 @@ export const clearItem = async (req: Request, res: Response) => {
     });
 
   return res.json(<ResponseType>{
-    message: "success",
+    message: "success clear data",
     data: result,
   });
 };

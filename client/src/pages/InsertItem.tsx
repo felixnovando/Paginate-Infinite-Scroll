@@ -1,12 +1,13 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react"
 import { usePopUpContext } from "../context";
+import { ErrorResponse } from "../types";
 
 async function insertItem(name: string, price: number) {
-    const { data } = await axios.post<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
+    const { data } = await axios.post<{ message: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
         name, price
     });
-    return data.data;
+    return data.message;
 }
 
 const InsertItem = () => {
@@ -17,21 +18,15 @@ const InsertItem = () => {
     const { success, error } = usePopUpContext();
 
     async function handleInsertItem() {
-        if (name === "") {
-            error("Product Name Must Not Empty");
-            return;
-        } else if (price <= 0) {
-            error("Product Price Must Not Lower than 1");
-            return;
-        }
-
         try {
             const result = await insertItem(name, price);
             success(result);
             setName("");
             setPrice(0);
         } catch (e: any) {
-            error(e.message);
+            const errorResponse = (e as AxiosError).response?.data as ErrorResponse;
+            for (const err of errorResponse.error)
+                error(err);
         }
     }
 

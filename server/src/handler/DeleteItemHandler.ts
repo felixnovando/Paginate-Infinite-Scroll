@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { ResponseType } from "../types";
-import { mutate } from "../db/connection";
+import { Product, ResponseType } from "../types";
+import { mutate, query } from "../db/connection";
 import { plainToInstance } from "class-transformer";
 import { validateDTO } from "../util";
 import { DeleteItemDTO } from "../dto";
@@ -15,6 +15,16 @@ export const deleteItem = async (req: Request, res: Response) => {
       error: errors,
     });
 
+  //check item exists
+  const products = await query<Product>(`SELECT * FROM items WHERE id = ${body.id}`);
+  const product: Product | null = products.length == 0 ? null : products[0];
+
+  if (product == null)
+    return res.status(400).json(<ResponseType>{
+      message: "item is not exists",
+      error: ["item is not exists"],
+    });
+
   const { id } = body;
 
   const result = await mutate(`DELETE FROM items WHERE id = ${id}`);
@@ -26,7 +36,7 @@ export const deleteItem = async (req: Request, res: Response) => {
     });
 
   return res.json(<ResponseType>{
-    message: "success",
+    message: "success delete item",
     data: result,
   });
 };

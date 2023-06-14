@@ -1,6 +1,7 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { usePopUpContext } from "../context";
+import { ErrorResponse } from "../types";
 
 async function getAllItemCount() {
   const { data } = await axios.get<{ data: { total: number } }>(`${import.meta.env.VITE_SERVER_URL}/item/count`);
@@ -8,15 +9,15 @@ async function getAllItemCount() {
 }
 
 async function clearItems() {
-  const { data } = await axios.delete<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item/clear`);
-  return data.data;
+  const { data } = await axios.delete<{ message: string }>(`${import.meta.env.VITE_SERVER_URL}/item/clear`);
+  return data.message;
 }
 
 async function seedItems(count: number) {
-  const { data } = await axios.post<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item/seed`, {
+  const { data } = await axios.post<{ message: string }>(`${import.meta.env.VITE_SERVER_URL}/item/seed`, {
     count
   });
-  return data.data;
+  return data.message;
 }
 
 const Settings = () => {
@@ -30,7 +31,7 @@ const Settings = () => {
   }, []);
 
   async function handleSeed() {
-    if(seedCount < 1 || seedCount > 10000){
+    if (seedCount < 1 || seedCount > 10000) {
       error("Seeding Count Must Be Between 1 and 10000");
       return;
     }
@@ -41,7 +42,9 @@ const Settings = () => {
       setSeedCount(0);
       setTotal(seedCount);
     } catch (e: any) {
-      error(e.message);
+      const errorResponse = (e as AxiosError).response?.data as ErrorResponse;
+      for (const err of errorResponse.error)
+        error(err);
     }
   }
 
@@ -52,7 +55,9 @@ const Settings = () => {
       setSeedCount(0);
       setTotal(0);
     } catch (e: any) {
-      error(e.message);
+      const errorResponse = (e as AxiosError).response?.data as ErrorResponse;
+      for (const err of errorResponse.error)
+        error(err);
     }
   }
 

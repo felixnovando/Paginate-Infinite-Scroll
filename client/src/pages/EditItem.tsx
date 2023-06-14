@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react";
-import { Item } from "../types";
-import axios from "axios";
+import { ErrorResponse, Item } from "../types";
+import axios, { AxiosError } from "axios";
 import { usePopUpContext } from "../context";
 
 async function getItem(id: string) {
@@ -10,17 +10,17 @@ async function getItem(id: string) {
 }
 
 async function updateItem(id: number, name: string, price: number) {
-    const { data } = await axios.put<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
+    const { data } = await axios.put<{ message: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
         id, name, price
     });
-    return data.data;
+    return data.message;
 }
 
 async function deleteItem(id: number) {
-    const { data } = await axios.delete<{ data: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
+    const { data } = await axios.delete<{ message: string }>(`${import.meta.env.VITE_SERVER_URL}/item`, {
         data: { id }
     });
-    return data.data;
+    return data.message;
 }
 
 const EditItem = () => {
@@ -47,21 +47,17 @@ const EditItem = () => {
     }, [id]);
 
     async function handleUpdateItem() {
-
-        if (name === "") {
-            error("Product Name Must Not Empty");
-            return;
-        } else if (price <= 0) {
-            error("Product Price Must Not Lower than 1");
-            return;
-        }
-
         if (!data) return;
         try {
             const result = await updateItem(data?.id, name, price);
             success(result);
         } catch (e: any) {
-            error(e.message);
+            const errorResponse = (e as AxiosError).response?.data as ErrorResponse;
+            for (const err of errorResponse.error)
+                error(err);
+
+            setName(data.name);
+            setPrice(data.price);
         }
     }
 
@@ -73,7 +69,9 @@ const EditItem = () => {
             success(result);
             navigate("/pagination");
         } catch (e: any) {
-            error(e.message);
+            const errorResponse = (e as AxiosError).response?.data as ErrorResponse;
+            for (const err of errorResponse.error)
+                error(err);
         }
     }
 

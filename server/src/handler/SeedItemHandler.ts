@@ -42,7 +42,7 @@ export const seedItem = async (req: Request, res: Response) => {
     });
 
   return res.json(<ResponseType>{
-    message: "success",
+    message: "success seed data",
     data: result,
   });
 };

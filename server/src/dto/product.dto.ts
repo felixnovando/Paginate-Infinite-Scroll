@@ -1,8 +1,9 @@
-import { IsDefined, IsInt, IsString } from "class-validator";
+import { IsDefined, IsInt, IsNotEmpty, IsString } from "class-validator";
 
 export class InsertItemDTO {
   @IsDefined()
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsDefined()
@@ -17,6 +18,7 @@ export class UpdateItemDTO {
 
   @IsDefined()
   @IsString()
+  @IsNotEmpty()
   name!: string;
 
   @IsDefined()
