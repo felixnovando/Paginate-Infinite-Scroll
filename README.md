@@ -23,10 +23,11 @@
     b. name, varchar length 255
     c. price, int
    </pre>
-  <p>4. go to server folder, run <b>npm install</b></p>
-  <p>5. build the server by running <b>npm run build</b></p>
-  <p>6. start the server by running <b>npm start</b></p>
-  <p>7. go to client folder, run <b>npm install</b></p>
-  <p>8. build the client by running <b>npm run build</b></p>
-  <p>9. start the client by running <b>npm run preview</b></p>
+  <p>4. adjust the .env file for server and client</p>
+  <p>5. go to server folder, run <b>npm install</b></p>
+  <p>6. build the server by running <b>npm run build</b></p>
+  <p>7. start the server by running <b>npm start</b></p>
+  <p>8. go to client folder, run <b>npm install</b></p>
+  <p>9. build the client by running <b>npm run build</b></p>
+  <p>10. start the client by running <b>npm run preview</b></p>
 </div>
