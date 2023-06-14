@@ -78,31 +78,41 @@ const EditItem = () => {
     return (
         <section className="h-full flex flex-col">
             <div className="flex-1 p-3 flex justify-center items-center">
-                <div className="bg-slate-200 w-[600px] p-5 rounded-lg shadow-lg drop-shadow-lg">
-                    <div className="flex flex-col mb-3">
-                        <label htmlFor="name" className="mb-3">Product Name</label>
-                        <input type="text" name="name" id="name" className="p-2 pl-2" value={name}
-                            onChange={(e) => setName(e.target.value)} />
-                    </div>
 
-                    <div className="flex flex-col mb-5">
-                        <label htmlFor="price" className="mb-3">Product Price</label>
-                        <input type="number" name="price" id="price" className="p-2 pl-2" value={price}
-                            onChange={(e) => setPrice(Number(e.target.value))} />
-                    </div>
+                {
+                    data === null ?
+                        <div className="bg-slate-200 w-[600px] p-5 rounded-lg shadow-lg drop-shadow-lg">
+                            <p className="font-bold text-5xl text-center text-black">Item Not Found</p>
+                        </div>
+                        :
 
-                    <div className="flex justify-evenly">
-                        <button type="button"
-                            disabled={data === null}
-                            onClick={handleUpdateItem}
-                            className="w-5/12 bg-yellow-500 text-white font-semibold p-2 rounded-md hover:text-yellow-500 hover:bg-white">Update</button>
+                        <div className="bg-slate-200 w-[600px] p-5 rounded-lg shadow-lg drop-shadow-lg">
+                            <div className="flex flex-col mb-3">
+                                <label htmlFor="name" className="mb-3">Product Name</label>
+                                <input type="text" name="name" id="name" className="p-2 pl-2" value={name}
+                                    onChange={(e) => setName(e.target.value)} />
+                            </div>
 
-                        <button
-                            disabled={data === null}
-                            onClick={handleDeleteItem}
-                            className="w-5/12 bg-red-500 text-white font-semibold p-2 rounded-md hover:text-red-500 hover:bg-white">Delete</button>
-                    </div>
-                </div>
+                            <div className="flex flex-col mb-5">
+                                <label htmlFor="price" className="mb-3">Product Price</label>
+                                <input type="number" name="price" id="price" className="p-2 pl-2" value={price}
+                                    onChange={(e) => setPrice(Number(e.target.value))} />
+                            </div>
+
+                            <div className="flex justify-evenly">
+                                <button type="button"
+                                    disabled={data === null}
+                                    onClick={handleUpdateItem}
+                                    className="w-5/12 bg-yellow-500 text-white font-semibold p-2 rounded-md hover:text-yellow-500 hover:bg-white">Update</button>
+
+                                <button
+                                    disabled={data === null}
+                                    onClick={handleDeleteItem}
+                                    className="w-5/12 bg-red-500 text-white font-semibold p-2 rounded-md hover:text-red-500 hover:bg-white">Delete</button>
+                            </div>
+                        </div>
+
+                }
 
             </div>
         </section>

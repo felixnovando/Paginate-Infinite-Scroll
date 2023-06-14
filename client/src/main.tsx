@@ -13,6 +13,7 @@ import Settings from './pages/Settings';
 import Pagination from './pages/Pagination';
 import Infinite from './pages/Infinite';
 import { PopUpProvider } from './context';
+import NotFound from './pages/NotFound';
 
 const router = createBrowserRouter([
   {
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
   {
     path: "/infinite-scrolling",
     element: <Layout><Infinite /></Layout>
+  },
+  {
+    path: "*",
+    element: <Layout><NotFound /></Layout>
   }
 ]);
 
