@@ -1,0 +1,51 @@
+version: '3.1'
+
+services:
+  db:
+    image: mysql
+    container_name: db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin123
+      MYSQL_DATABASE: paginate-scroll
+    volumes:
+      - db:/var/lib/mysql
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      PMA_ARBITRARY: 1
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    depends_on:
+      - db
+  api:
+    build:
+      context: ./server
+      dockerfile: ./Dockerfile
+    container_name: api
+    env_file:
+      - ./server/.env
+    ports:
+      - 3000:3000
+    depends_on:
+      - db
+  ui:
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+    container_name: ui
+    env_file:
+      - ./client/.env
+    ports:
+      - 8000:4173
+    depends_on:
+      - api
+
+volumes:
+  db:

@@ -19,11 +19,12 @@
     "cors": "^2.8.5",
     "dotenv": "^16.1.4",
     "express": "^4.18.2",
-    "mysql": "github:mysqljs/mysql",
+    "mysql2": "^3.3.5",
     "nodemon": "^2.0.22",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.13"
+    "@types/cors": "^2.8.13",
+    "typescript": "^4.8.3"
   }
 }
