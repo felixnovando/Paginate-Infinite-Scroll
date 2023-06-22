@@ -3,7 +3,7 @@ version: '3.1'
 services:
   db:
     image: mysql
-    container_name: db
+    container_name: PIS-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: password
@@ -11,10 +11,10 @@ services:
       MYSQL_PASSWORD: admin123
       MYSQL_DATABASE: paginate-scroll
     volumes:
-      - db:/var/lib/mysql
+      - PIS-db:/var/lib/mysql
   phpmyadmin:
     image: phpmyadmin
-    container_name: phpmyadmin
+    container_name: PIS-phpmyadmin
     restart: always
     ports:
       - 8080:80
@@ -28,7 +28,7 @@ services:
     build:
       context: ./server
       dockerfile: ./Dockerfile
-    container_name: api
+    container_name: PIS-api
     env_file:
       - ./server/.env
     ports:
@@ -39,7 +39,7 @@ services:
     build:
       context: ./client
       dockerfile: ./Dockerfile
-    container_name: ui
+    container_name: PIS-ui
     env_file:
       - ./client/.env
     ports:
@@ -48,4 +48,4 @@ services:
       - api
 
 volumes:
-  db:
+  PIS-db:
