@@ -15,19 +15,14 @@
 
 <div>
   <h2>steps to run app</h2>
-  <p>1. run mysql database</p>
-  <p>2. create a database</p>
-  <p>3. create a table named "Items", with the property of</p>
+  <p>1. run <b>docker-compose up -d</b></p>
+  <p>2. open PHPMyAdmin at port 8080 and do login with credential <b>admin</b> and password <b>admin123</b></p>
+  <p>4. create a database named <b>paginate-scroll</b></p>
+  <p>5. create a table in that database named <b>Items</b>, with the property of</p>
   <pre>    
     a. id, int, auto increment, primary key
     b. name, varchar length 255
     c. price, int
    </pre>
-  <p>4. adjust the .env file for server and client</p>
-  <p>5. go to server folder, run <b>npm install</b></p>
-  <p>6. build the server by running <b>npm run build</b></p>
-  <p>7. start the server by running <b>npm start</b></p>
-  <p>8. go to client folder, run <b>npm install</b></p>
-  <p>9. build the client by running <b>npm run build</b></p>
-  <p>10. start the client by running <b>npm run preview</b></p>
+  <p>6. open the Application UI at port 8000</p>
 </div>
